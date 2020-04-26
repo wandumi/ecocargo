@@ -65,7 +65,7 @@ class FleetController extends Controller
         $fleet->order_note = $request->order_note;
         $fleet->save();
 
-        return response()->json('Successfully Saved', 200);
+        return response()->json('saved', 200);
     }
 
     /**

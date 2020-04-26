@@ -24,6 +24,8 @@
      <!-- Scripts -->
      <script src="{{ asset('js/app.js') }}" defer></script>
 
+     <link rel="stylesheet" href="{{ asset('front/parsleyjs/dist/parsley.css') }}">
+
   </head>
   <style>
     .form-fleet{
@@ -107,72 +109,106 @@
                             <h3>Shipping System</h3>
                         </div>
                         <div class="card-body">
-                            <form name="fleet" id="fleet">
+                            <form name="fleet" id="fleet" method="POST" action="{{ url('fleet') }}" data-parsley-validate="true">
                                 @csrf
-                                <div class="form-group">
-                                    <label for="countries">countries</label>
-                                    <select name="countries" id="countries" class="form-control">
-                                        <option disables selected>Countries</option>
-                                        @foreach ($countries as $country)
-                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                        @endforeach
-                                    </select>
+
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="countries">countries</label>
+                                        <select name="countries" id="countries" class="form-control" required>
+                                            <option disables selected value="">Countries</option>
+                                            @foreach ($countries as $country)
+                                                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <label for="state_province_region">State / Provice / Region</label>
+                                        <select name="states" id="states"  class="form-control" required>
+                                            <option disables selected value="">State/Province/Region</option>
+                                            <option value="0"></option>
+                                        </select>
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <label for="cities">Cities</label>
+                                        <select name="cities" id="cities" class="form-control" required>
+                                            <option disables selected value="">Cities</option>
+                                           
+                                        </select>
+                                    </div>
+
+                                  </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="state_province_region">State / Provice / Region</label>
-                                    <select name="states" id="states" class="form-control">
-                                        <option disables selected>State/Province/Region</option>
-                                        <option value="0"></option>
-                                    </select>
+                                <div class="row">
+                                  <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label for="sender">Sender Information</label>
+                                        <select name="sender" id="sender" class="form-control" required >
+                                            <option disables selected value="">Sender Information</option>
+                                            @foreach ($sender as $client)
+                                                <option value="{{ $client->id }}">{{ $client->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-md-6">
+
+                                    <div class="form-group">
+                                      <label for="receiver">Receiver Information</label>
+                                      <select name="receiver" id="receiver" class="form-control" required>
+                                          <option disables selected value="">Receiver Information</option>
+                                          @foreach ($receiver as $client)
+                                              <option value="{{ $client->id }}">{{ $client->name }}</option>
+                                          @endforeach
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                
+
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="services">Services</label>
+                                        <input type="text" name="services" class="form-control" required >
+                                    </div>
+
+                                  </div>
+                                  <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label for="date">Date</label>
+                                        <input type="date" name="date" id="date" class="form-control" required>
+                                    </div>
+                                  </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="cities">Cities</label>
-                                    <select name="cities" id="cities" class="form-control">
-                                        <option disables selected>Cities</option>
-                                       
-                                    </select>
+
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label for="order_note">Order Note</label>
+                                      <textarea name="order_note" id="order_note" rows="5" class="form-control" required></textarea>
+                                    </div>
+
+                                  </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="sender">Sender Information</label>
-                                    <select name="sender" id="sender" class="form-control">
-                                        <option disables selected>Sender Information</option>
-                                      @foreach ($sender as $client)
-                                          <option value="{{ $client->id }}">{{ $client->name }}</option>
-                                      @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                  <label for="receiver">Receiver Information</label>
-                                  <select name="receiver" id="receiver" class="form-control">
-                                      <option disables selected>Receiver Information</option>
-                                    @foreach ($receiver as $client)
-                                        <option value="{{ $client->id }}">{{ $client->name }}</option>
-                                    @endforeach
-                                  </select>
-                              </div>
-
-                                <div class="form-group">
-                                    <label for="services">Services</label>
-                                    <input type="text" name="services" class="form-control" >
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="date">Date</label>
-                                    <input type="date" name="date" id="date" class="form-control">
-                                </div>
-
-                                <div class="form-group">
-                                  <label for="order_note">Order Note</label>
-                                  <textarea name="order_note" id="order_note" rows="5" class="form-control"></textarea>
-                                </div>
-
-                                <div> 
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <button type="reset" class="btn-md btn-warning float-left pl-5 pr-5 text-dark " >Reset</button> 
+                                  </div>
+                                  <div class="col-md-6">
                                     <button id="fleetSend" class="btn-md btn-success float-right pl-5 pr-5" type="submit">Save Info</button>
+                                  </div>
                                 </div>
+                                
         
         
         
@@ -217,9 +253,15 @@
     <script src="{{ asset('front/popper.min.js') }}"></script>
     <script src="{{ asset('front/bootstrap.min.js') }}"></script>
     <script src="{{ asset('front/holder.min.js') }}"></script>
+    <script src="{{ asset('front/parsleyjs/dist/parsley.min.js') }}"></script>
+    <script src="{{ asset('front/sweetalert/dist/sweetalert.min.js') }}"></script>
+    {{-- <script src="http://parsleyjs.org/dist/parsley.js"></script> --}}
+    
     <script>
         $(document).ready(function(){
           
+            
+
             $('#countries').on('change', function(e){
                 // console.log(e);
 
@@ -256,31 +298,48 @@
                 });
             });
 
-            // form data collected
 
-            $('#fleetSend').on('click', function(e){
-                e.preventDefault();
+            var fleetForm = $('#fleet');
 
-                
-                var fleetForm = $('#fleet').serialize();
-                
-                var url = 'fleet';
+            fleetForm.submit(function(e){
 
-                $.ajax({
-                    url:url,
-                    type: "POST",
-                    data: fleetForm,
-                    success: function(data){
-                        console.log(data);
+              e.preventDefault();
 
-                        alert('Successfully Save!');
-                    },
-                    error:function(){
-                        alert('There was an Error with your bid, Please try again');
-                    }
-                });
+              $.ajax({
+                  url: fleetForm.attr('action'),
+                  type: "POST",
+                  data: fleetForm.serialize(),
+                  success: function(data){
+                      console.log(data);
+  
+                      
 
-            })
+                      if(data){
+                        // alert('Successfully Save!');
+                        
+                          swal({
+                            title: "Successfully!",
+                            text: "Fleet Information has been Saved!",
+                            icon: "success",
+                            button: "Ok!",
+                          });
+                          // window.location.replace(response.url);
+                        } else {
+                          swal("Oops!", data.errors, 'error');
+                      }
+                      
+
+
+                  
+                      
+                  },
+                  error:function(){
+                        swal("Fail!", "Fleet not Saved!", 'error');
+                  }
+              });
+
+            });
+            
 
         });
     </script>

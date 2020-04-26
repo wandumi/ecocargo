@@ -36,8 +36,15 @@
 
                     @foreach ($allstates as $states)
                         <tr>
-                          <td>{{ $loop->index++ }}</td>
-                          <td>{{ $states->country_id }}</td>
+                          <td>{{ $loop->index + 1 }}</td>
+                          <td>
+                            @foreach ($countries as $country)
+                                @if ($country->id == $states->country_id)
+                                    {{ $country->name }}
+                                @endif
+                            @endforeach
+                           
+                          </td>
                           <td>{{ $states->name }}</td>
                           <td>{{ $states->created_at }}</td>
                           <td>
