@@ -39,7 +39,18 @@ class StateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // return $request->all();
+        $this->validate($request, [
+            'country' => 'required',
+            'name' => 'required|unique:states,name'
+        ]);
+
+        $state = new State;
+        $state->country_id = $request->country;
+        $state->name = $request->name;
+        $state->save();
+
+        return response()->Json('Successfully', 200);
     }
 
     /**

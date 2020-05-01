@@ -17,7 +17,7 @@ class FleetdashController extends Controller
      */
     public function index()
     {
-        $allFleets = Fleet::all();
+        $allFleets = Fleet::latest()->get();
         $countries = Country::all();
         $ctate = State::all();
         $cities = City::all();
@@ -54,7 +54,12 @@ class FleetdashController extends Controller
      */
     public function show($id)
     {
-        //
+        $fleet = Fleet::where('id',$id)->first();
+        $countries = Country::all();
+        $cities = City::all();
+        $states = State::all();
+
+        return view('admin.pages.fleet.showFleet', compact('fleet','countries','cities','states') );
     }
 
     /**

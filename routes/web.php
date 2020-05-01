@@ -23,12 +23,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-/**
- * Pages in the system
- * @they are connected to their controller 
- */
-
-Route::resource('countries',"CountryController");
 
 /**
  * Form field route
@@ -45,11 +39,15 @@ Route::resource('fleetdash',"FleetdashController");
  * all routs for country/city/state 
  * @dropdown
  */
-Route::resource('country',"CountryController");
 
-Route::resource('allstates',"StateController");
-
-Route::resource('allcities',"CityController");
+Route::prefix('countries')->group(function () {
+  
+    Route::resource('country',"CountryController");
+    
+    Route::resource('states',"StateController");
+    
+    Route::resource('cities',"CityController");
+});
 
 /**
  * all the information concerning routes
@@ -68,5 +66,4 @@ Route::resource('clientsinfo',"ClientinfoController");
  */
  Route::get('states',"Countrystatecity@states");
  Route::get('cities',"Countrystatecity@cities");
-
 

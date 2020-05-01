@@ -117,7 +117,7 @@
                                     <div class="form-group">
                                         <label for="countries">countries</label>
                                         <select name="countries" id="countries" class="form-control" required>
-                                            <option disables selected value="">Countries</option>
+                                            <option disabled selected value="">Countries</option>
                                             @foreach ($countries as $country)
                                                 <option value="{{ $country->id }}">{{ $country->name }}</option>
                                             @endforeach
@@ -149,7 +149,7 @@
                                     <div class="form-group">
                                         <label for="sender">Sender Information</label>
                                         <select name="sender" id="sender" class="form-control" required >
-                                            <option disables selected value="">Sender Information</option>
+                                            <option disabled selected value="">Sender Information</option>
                                             @foreach ($sender as $client)
                                                 <option value="{{ $client->id }}">{{ $client->name }}</option>
                                             @endforeach
@@ -162,7 +162,7 @@
                                     <div class="form-group">
                                       <label for="receiver">Receiver Information</label>
                                       <select name="receiver" id="receiver" class="form-control" required>
-                                          <option disables selected value="">Receiver Information</option>
+                                          <option disabled selected value="">Receiver Information</option>
                                           @foreach ($receiver as $client)
                                               <option value="{{ $client->id }}">{{ $client->name }}</option>
                                           @endforeach
@@ -201,11 +201,9 @@
                                 </div>
 
                                 <div class="row">
-                                  <div class="col-md-6">
-                                    <button type="reset" class="btn-md btn-warning float-left pl-5 pr-5 text-dark " >Reset</button> 
-                                  </div>
-                                  <div class="col-md-6">
-                                    <button id="fleetSend" class="btn-md btn-success float-right pl-5 pr-5" type="submit">Save Info</button>
+                                  <div class="col-md-12">
+                                    <button type="reset" class="btn-md btn-warning float-left pl-md-5 pr-md-5 text-dark " >Reset</button> 
+                                    <button id="fleetSend" class="btn-md btn-success float-right pl-md-5 pr-md-5" type="submit">Save Info</button>
                                   </div>
                                 </div>
                                 

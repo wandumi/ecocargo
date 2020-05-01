@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\City;
+use App\State;
 use App\Country;
 use Illuminate\Http\Request;
 
@@ -17,8 +18,9 @@ class CityController extends Controller
     {
         $allcities = City::all();
         $countries = Country::all();
+        $states = State::all();
 
-        return view('admin.pages.cities.allcities', compact('allcities','countries') );
+        return view('admin.pages.cities.allcities', compact('allcities','states') );
     }
 
     /**
@@ -39,7 +41,18 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // return $request->all();
+        $this->validate($request, [
+            'state' => 'required',
+            'name' => 'required|unique:cities,name'
+        ]);
+
+        $state = new City;
+        $state->state_id = $request->state;
+        $state->name = $request->name;
+        $state->save();
+
+        return response()->Json('Successfully', 200);
     }
 
     /**

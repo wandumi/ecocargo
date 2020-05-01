@@ -103,7 +103,7 @@
                     </div>
                     <div class="form-group">
                       <label for="name">Physcial Address</label>
-                      <textarea name="address" id="address" rows="10" class="form-control"></textarea>
+                      <textarea name="address" id="address" rows="5" class="form-control"></textarea>
                     </div>
                     <div class="form-group">
                       <label for="name">Clietn Type</label>
@@ -150,7 +150,8 @@
             "searching": false,
             "ordering": true,
             "info": true,
-            "autoWidth": false
+            "autoWidth": true,
+            "responsive": true
           });
         });
       </script>

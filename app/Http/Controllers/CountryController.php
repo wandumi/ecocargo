@@ -34,9 +34,20 @@ class CountryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Country $country)
     {
-        //
+        // return $request->all();
+        $this->validate($request,[
+            'country' => 'required|min:2|unique:countries,name',
+            'zip_code' => 'required|integer|unique:countries,zip_code'
+        ]);
+
+        // $country = new Country;
+        $country->name = $request->country;
+        $country->zip_code = $request->zip_code;
+        $country->save();
+
+        return response()->Json('Successful', 200);
     }
 
     /**
@@ -58,7 +69,7 @@ class CountryController extends Controller
      */
     public function edit(Country $country)
     {
-        //
+        return $country;
     }
 
     /**
@@ -70,7 +81,11 @@ class CountryController extends Controller
      */
     public function update(Request $request, Country $country)
     {
-        //
+        $country->name = $request->country;
+        $country->zip_code = $request->zip_code;
+        $country->save();
+
+        return response()->Json('Successful', 200);
     }
 
     /**

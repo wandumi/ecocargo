@@ -4,7 +4,7 @@
     <a href="index3.html" class="brand-link">
       <img src="{{ asset('admin/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span class="brand-text font-weight-light">Ecocargo</span>
     </a>
 
     <!-- Sidebar -->
@@ -25,49 +25,20 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item has-treeview menu-open">
-            <a href="{{ url('/home') }}" class="nav-link active">
+            <a href="{{ url('home') }}" class="nav-link {{ setActive('home', 'active') }}">
               <i class="nav-icon fa fa-dashboard"></i>
               <p>
                 Dashboard
-                <i class="right fa fa-angle-left"></i>
+               
               </p>
             </a>
             
           </li>
          
-          {{-- <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fa fa-pie-chart"></i>
-              <p>
-                Cargo Information
-                <i class="right fa fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/charts/chartjs.html" class="nav-link">
-                  <i class="fa fa-circle-o nav-icon"></i>
-                  <p>ChartJS</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
-                  <i class="fa fa-circle-o nav-icon"></i>
-                  <p>Flot</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/inline.html" class="nav-link">
-                  <i class="fa fa-circle-o nav-icon"></i>
-                  <p>Inline</p>
-                </a>
-              </li>
-            </ul>
-          </li> --}}
 
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fa fa-pie-chart"></i>
+            <a href="#" class="nav-link {{ setActive('clientsinfo', 'active') }}">
+              <i class="nav-icon fa fa-users"></i>
               <p>
                 Clients
                 <i class="right fa fa-angle-left"></i>
@@ -75,7 +46,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ url('clientsinfo') }}" class="nav-link">
+                <a href="{{ url('clientsinfo') }}" class="nav-link {{ setActive('clientsinfo', 'active') }}">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>All Clients</p>
                 </a>
@@ -84,56 +55,48 @@
             </ul>
           </li>
 
-          <li class="nav-item has-treeview">
-            <a href="" class="nav-link">
-              <i class="nav-icon fa fa-edit"></i>
-              <p>
-                Fleet
-                <i class="fa fa-angle-left right"></i>
-              </p>
+         
+
+          <li class="nav-item has-treeview ">
+            <a href="#" class="nav-link {{ setActive('fleetdash', 'active') }}">
+                <i class="nav-icon fa fa-bus"></i>
+                <p>
+                    Fleet
+                    <i class="fa fa-angle-left right"></i>
+                </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ url('fleetdash') }}" class="nav-link">
-                  <i class="fa fa-circle-o nav-icon"></i>
-                  <p>All fleet</p>
-                </a>
-              </li>
-             
+                <li class="nav-item">
+                    <li class="nav-item">
+
+                        <a href="{{ url('fleetdash') }}" class="nav-link {{ setActive('fleetdash', 'active') }} ">
+                            <i class="fa fa-circle-o nav-icon"></i>
+                            <p>all fleet</p>
+                        </a>
+
+                    </li>
+
+                    {{-- <li class="nav-item">
+
+                        <a href="{{ url('social') }}" class="nav-link {{ setActive('social', 'active') }} ">
+                            <i class="fa fa-line-chart nav-icon"></i>
+                            <p>Social Media Reports</p>
+                        </a>
+
+                    </li> --}}
+                    
+                </li>
             </ul>
+
           </li>
 
 
-          {{-- <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fa fa-table"></i>
-              <p>
-                Pickup Information
-                <i class="fa fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/tables/simple.html" class="nav-link">
-                  <i class="fa fa-circle-o nav-icon"></i>
-                  <p>Simple Tables</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/tables/data.html" class="nav-link">
-                  <i class="fa fa-circle-o nav-icon"></i>
-                  <p>Data Tables</p>
-                </a>
-              </li>
-            </ul>
-          </li> --}}
-
-          .3
+          
           <li class="nav-header">SETTINGS</li>
           
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fa fa-envelope-o"></i>
+            <a href="#" class="nav-link {{ setActive('countries/country', 'active') }}">
+              <i class="nav-icon fa fa-globe"></i>
               <p>
                 Countries
                 <i class="fa fa-angle-left right"></i>
@@ -141,19 +104,19 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ url('countries') }}" class="nav-link">
+                <a href="{{ url('countries/country') }}" class="nav-link {{ setActive('countries/country', 'active') }}">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>Country</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('allstates') }}" class="nav-link">
+                <a href="{{ url('countries/states') }}" class="nav-link {{ setActive('countries/allstates', 'active') }}">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>States</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('allcities') }}" class="nav-link">
+                <a href="{{ url('countries/cities') }}" class="nav-link {{ setActive('countries/allcities', 'active') }}">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>Cities</p>
                 </a>
@@ -162,7 +125,7 @@
             </ul>
           </li>
          
-          {{-- <li class="nav-header">SIGN OUT</li> --}}
+        
 
           
 
