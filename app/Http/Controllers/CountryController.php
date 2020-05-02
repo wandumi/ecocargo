@@ -58,7 +58,7 @@ class CountryController extends Controller
      */
     public function show(Country $country)
     {
-        //
+        return $country;
     }
 
     /**
@@ -96,6 +96,8 @@ class CountryController extends Controller
      */
     public function destroy(Country $country)
     {
-        //
+        $country->delete();
+
+        return response()->Json('Success',200);
     }
 }

@@ -6,7 +6,7 @@ use App\City;
 use App\Fleet;
 use App\State;
 use App\Country;
-use App\Clientinfo;
+use App\Client;
 use Illuminate\Http\Request;
 
 class FleetController extends Controller
@@ -21,8 +21,8 @@ class FleetController extends Controller
         $countries = Country::all();
         $city = City::all();
         $state = State::all();
-        $sender = Clientinfo::where('client_type','=',0)->get();
-        $receiver = Clientinfo::where('client_type','=',1)->get();
+        $sender = Client::where('client_type','=',0)->get();
+        $receiver = Client::where('client_type','=',1)->get();
 
         return view("front.fleet", compact('countries', 'city', 'state', 'allclientsinfo', 'sender', 'receiver') );
     }

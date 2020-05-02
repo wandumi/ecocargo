@@ -37,7 +37,7 @@
          
 
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link {{ setActive('clientsinfo', 'active') }}">
+            <a href="#" class="nav-link {{ setActive('clients', 'active') }}">
               <i class="nav-icon fa fa-users"></i>
               <p>
                 Clients
@@ -46,7 +46,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ url('clientsinfo') }}" class="nav-link {{ setActive('clientsinfo', 'active') }}">
+                <a href="{{ url('clients') }}" class="nav-link {{ setActive('clients', 'active') }}">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>All Clients</p>
                 </a>

@@ -27,7 +27,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped ">
+                <table id="example1" class="table table-bordered table-striped table-responsive nowrap" width="100%">
                   <thead>
                   <tr>
                     <th></th>
@@ -46,11 +46,15 @@
                           <td>{{ $country->zip_code }}</td>
                           <td>{{ $country->created_at->toDayDateTimeString() }}</td>
                           <td>
-                            <a href="#" class="btn-sm btn-info" 
+                            <a href="" class="btn-sm btn-info fa fa-edit" 
                                         data-toggle="modal"
                                         data-target=".countryEditModal"
-                                        data-countryid ="{{ $country->id }}">Edit</a> /
-                            <a href="#" class="btn-sm btn-success">View</a>
+                                        data-countryid ="{{ $country->id }}"></a> /
+                            <a href="" class="btn-sm btn-success fa fa-eye"
+                                        data-toggle="modal" data-target=".countryShowModal" 
+                                        data-countryid ="{{ $country->id }}"></a> /
+                            <a href="" class="btn-sm btn-danger fa fa-trash countryDelete" data-id={{ $country->id }}></a>
+
                           </td>
                         </tr>
                     @endforeach
@@ -154,6 +158,50 @@
       <!-- /.modal-dialog -->
     </div>
 
+    <!-- Show the form -->
+    <div class="modal fade countryShowModal" id="modal-lg">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Show Country</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="card-body">
+                 <form id="showCountry">
+                  @csrf
+                     <div class="form-group">
+                       <label for="country">Country Name</label>
+                       <input type="text" name="country" id="country" class="form-control">
+                     </div>
+                     
+                     <div class="form-group">
+                      <label for="zip_code">ZIP Code</label>
+                      <input type="text" name="zip_code" id="zip_code" class="form-control">
+                    </div>
+
+                    
+
+            </div>
+          </div>
+          <div class="modal-footer ">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+ 
+            
+          </div>
+
+          
+                    
+
+        </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+
     
 @endsection
 
@@ -217,9 +265,6 @@
                       swal("Oops!", data.errors, 'error');
                     }
 
-
-
-
                   $('.countryModal').modal('show');
                 },
                 error: function(error){
@@ -227,6 +272,41 @@
                 }
             });
 
+          });
+
+          //show Countries
+          $('.countryShowModal').on('show.bs.modal', function (event) {
+                let button = $(event.relatedTarget) // Button that triggered the modal
+              
+                let countryId = button.data('countryid') // Extract info from data-* attributes
+
+                // alert(countryId);
+
+                // let modal = $(this)
+                let url = 'country';
+            
+                $.ajax({
+                    url: url+"/"+countryId,
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function(data){
+                        console.log(data);
+                        
+                        $('#showCountry').find('#country').val(data.name);
+                        $('#showCountry').find('#zip_code').val(data.zip_code);
+                        
+                        
+                    
+                    },
+                    error: function(){
+                        alert("There was an error!");
+                        // toastr.error('There was an error, Please try again later');
+                    }
+                    
+                });
+
+            
+            
           });
 
           $('.countryEditModal').on('show.bs.modal', function (event) {
@@ -258,7 +338,7 @@
                     }
                 });
 
-            });
+            
             
           });
 
@@ -302,6 +382,59 @@
                 }
             });
           })
+
+          // Delete button with sweetalert 
+          $('.countryDelete').on('click', function () {
+                // return confirm('Are you sure want to delete?');
+                event.preventDefault();//this will hold the url
+                
+                $.ajaxSetup({
+                  headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  }
+                });
+
+                swal({
+                    title: "Are you sure?",
+                    text: "Once clicked, this will be not be Reversed!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+
+                    if (willDelete) {
+                      
+                      let dataId = $(this).attr("data-id");
+                      // let token = $("meta[name='csrf-token']").attr("content");
+                      // alert(dataId);
+                      let url = 'country';
+
+                      $.ajax({
+                            url: url+"/"+dataId,
+                            type: "DELETE",
+                            data: {
+                                "id": dataId,
+                                "_token": '{{csrf_token()}}',
+                            },
+                            success: function (data) {
+                                  swal("Done! Client has been Deleted!", {
+                                      icon: "success",
+                                      button: false,
+                                  });
+                            }         
+                        });
+
+                      setTimeout(function(){
+                          location.reload(true);//this will release the event
+                      },3000);
+                    } else {
+                        swal("Your imaginary file is safe!");
+                    }
+                });
+          });
+
+        });
 
       </script>
      

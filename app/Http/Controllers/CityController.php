@@ -63,7 +63,7 @@ class CityController extends Controller
      */
     public function show(City $city)
     {
-        //
+        return $city;
     }
 
     /**
@@ -74,7 +74,7 @@ class CityController extends Controller
      */
     public function edit(City $city)
     {
-        //
+        return $city;
     }
 
     /**
@@ -86,7 +86,11 @@ class CityController extends Controller
      */
     public function update(Request $request, City $city)
     {
-        //
+        $city->state_id = $request->state;
+        $city->name = $request->name;
+        $city->save();
+
+        return response()->Json('Success', 200);
     }
 
     /**
@@ -97,6 +101,8 @@ class CityController extends Controller
      */
     public function destroy(City $city)
     {
-        //
+        $city->delete();
+
+        return response()->Json('Success',200);
     }
 }

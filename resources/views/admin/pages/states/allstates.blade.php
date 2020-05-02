@@ -47,10 +47,14 @@
                            
                           </td>
                           <td>{{ $states->name }}</td>
-                          <td>{{ $states->created_at }}</td>
+                          <td>{{ $states->created_at->toFormattedDateString() }}</td>
                           <td>
-                            <a href="#" class="btn-sm btn-info">Edit</a> /
-                            <a href="#" class="btn-sm btn-success">View</a>
+                            <a href="" class="btn-sm btn-info fa fa-edit" 
+                                data-toggle="modal" data-target=".stateEditModal" 
+                                data-stateid="{{ $states->id }}"></a> /
+                            <a href="" class="btn-sm btn-success fa fa-eye"
+                                data-toggle="modal" data-target=".stateShowModal" data-stateid="{{ $states->id }}"></a> /
+                            <a href="" class="btn-sm btn-danger fa fa-trash stateDelete" data-id="{{ $states->id }}"></a>
                           </td>
                           
                         </tr>
@@ -114,7 +118,7 @@
       <!-- /.modal-dialog -->
     </div>
      <!-- Edit the form -->
-     <div class="modal fade countryEditModal" id="modal-lg">
+     <div class="modal fade stateEditModal" id="modal-lg">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
@@ -125,27 +129,32 @@
           </div>
           <div class="modal-body">
             <div class="card-body">
-                 <form id="countryEditForm">
+                 <form id="stateEditForm">
                   @csrf
                      <div class="form-group">
-                       <label for="country">Country Name</label>
-                       <input type="text" name="country" id="country" class="form-control">
+                       <label for="country">Country</label>
+                       <select name="country" id="country" class="form-control">
+                         <option disabled selected>Country</option>
+                         @foreach ($countries as $country)
+                             <option value="{{ $country->id }}">{{ $country->name }}</option>
+                         @endforeach
+                       </select>
                      </div>
                      
                      <div class="form-group">
-                      <label for="zip_code">ZIP Code</label>
-                      <input type="text" name="zip_code" id="zip_code" class="form-control">
+                      <label for="name">Name</label>
+                      <input type="text" name="name" id="name" class="form-control">
                     </div>
 
                     <div>
-                      <input type="hidden" name="countryid" id="countryid">
+                      <input type="hidded" name="stateid" id="stateid">
                     </div>
 
             </div>
           </div>
           <div class="modal-footer ">
             <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-success" id="updateCountry">Save Country</button>
+            <button type="submit" class="btn btn-success" id="updateState">Save Country</button>
             
           </div>
 
@@ -153,6 +162,52 @@
                     
 
         </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+
+    <!-- Show the form -->
+    <div class="modal fade stateShowModal" id="modal-lg">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Show State</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="card-body">
+                 
+                 <form id="showState">
+                     <div class="form-group">
+                       <select id="country" class="form-control">
+                         <label for="country">Country</label>
+                         
+                              @foreach ($countries as $country)
+                                  <option selected disabled value="{{ $country->id }}">{{ $country->name }}</option>
+                              @endforeach
+                       </select>
+                     </div>
+
+                     <div>
+                         <input type="text" name="name" id="name" class="form-control">
+                     </div>
+                 </form>
+
+            </div>
+          </div>
+          <div class="modal-footer ">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+
+          </div>
+
+          
+                    
+
+        
         </div>
         <!-- /.modal-content -->
       </div>
@@ -189,6 +244,7 @@
       <script>
         $(document).ready(function(){
 
+          // create a new state
           $('#saveState').on('click', function(event){
             event.preventDefault();
             
@@ -234,26 +290,60 @@
 
           });
 
-          $('.countryEditModal').on('show.bs.modal', function (event) {
+          //show State the coun
+          $('.stateShowModal').on('show.bs.modal', function (event) {
                 let button = $(event.relatedTarget) // Button that triggered the modal
               
-                let countryId = button.data('countryid') // Extract info from data-* attributes
+                let stateId = button.data('stateid') // Extract info from data-* attributes
 
                 // alert(countryId);
 
                 // let modal = $(this)
-                let url = 'country';
+                let url = 'states';
             
                 $.ajax({
-                    url: url+"/"+countryId+"/edit",
+                    url: url+"/"+stateId,
                     type: "GET",
                     dataType: "JSON",
                     success: function(data){
                         console.log(data);
                         
-                        $('#countryEditForm').find('#country').val(data.name);
-                        $('#countryEditForm').find('#zip_code').val(data.zip_code);
-                        $('#countryEditForm').find('#countryid').val(data.id);
+                        $('#showState').find('#country').val(data.country_id);
+                        $('#showState').find('#name').val(data.name);
+                            
+
+                    },
+                    error: function(){
+                        alert("There was an error!");
+                        // toastr.error('There was an error, Please try again later');
+                    }
+                });
+
+            
+            
+          });
+
+          //edit the state
+          $('.stateEditModal').on('show.bs.modal', function (event) {
+                let button = $(event.relatedTarget) // Button that triggered the modal
+              
+                let stateId = button.data('stateid') // Extract info from data-* attributes
+
+                // alert(countryId);
+
+                // let modal = $(this)
+                let url = 'states';
+            
+                $.ajax({
+                    url: url+"/"+stateId+"/edit",
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function(data){
+                        console.log(data);
+                        
+                        $('#stateEditForm').find('#country').val(data.country_id);
+                        $('#stateEditForm').find('#name').val(data.name);
+                        $('#stateEditForm').find('#stateid').val(data.id);
                         
                     
                     },
@@ -267,18 +357,19 @@
             
           });
 
-          $('#updateCountry').on('click', function(event){
+          // update the state
+          $('#updateState').on('click', function(event){
             event.preventDefault();
 
             // alert('HIE');
-            let countryId = $('#countryid').val();
-            let url = 'country';
-            let country = $('#countryEditForm').serialize();
+            let stateId = $('#stateid').val();
+            let url = 'states';
+            let states = $('#stateEditForm').serialize();
 
             $.ajax({
-                url:url+"/"+countryId,
+                url:url+"/"+stateId,
                 type: "PUT",
-                data: country,
+                data: states,
                 success: function(data){
                   console.log(data);
                   if(data){
@@ -295,7 +386,7 @@
                           }
                       );
                       // window.location.replace(response.url);
-                      $('countryEditModal').modal('hide');
+                      $('.stateEditModal').modal('hide');
                     } else {
                       swal("Oops!", data.errors, 'error');
                   }
@@ -306,7 +397,58 @@
                   swal("Fail!", "Failed to Upadate, Please, try again later!", 'error');
                 }
             });
-          })
+          });
+
+          // Delete button with sweetalert 
+          $('.stateDelete').on('click', function () {
+                // return confirm('Are you sure want to delete?');
+                event.preventDefault();//this will hold the url
+                
+                $.ajaxSetup({
+                  headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  }
+                });
+
+                swal({
+                    title: "Are you sure?",
+                    text: "Once clicked, this will be not be Reversed!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+
+                    if (willDelete) {
+                      
+                      let dataId = $(this).attr("data-id");
+                      // let token = $("meta[name='csrf-token']").attr("content");
+                      // alert(dataId);
+                      let url = 'states';
+
+                      $.ajax({
+                            url: url+"/"+dataId,
+                            type: "DELETE",
+                            data: {
+                                "id": dataId,
+                                "_token": '{{csrf_token()}}',
+                            },
+                            success: function (data) {
+                                  swal("Done! State has been Deleted!", {
+                                      icon: "success",
+                                      button: false,
+                                  });
+                            }         
+                        });
+
+                      setTimeout(function(){
+                          location.reload(true);//this will release the event
+                      },3000);
+                    } else {
+                        swal("Your imaginary file is safe!");
+                    }
+                });
+          });
 
       </script>
      

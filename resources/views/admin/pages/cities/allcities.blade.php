@@ -48,10 +48,15 @@
                             @endforeach
                           </td>
                           <td>{{ $city->name }}</td>
-                          <td>{{ $city->created_at }}</td>
+                          <td>{{ $city->created_at->toFormattedDateString() }}</td>
                           <td>
-                            <a href="#" class="btn-sm btn-info">Edit</a> /
-                            <a href="#" class="btn-sm btn-success">View</a>
+                            <a href="#" class="btn-sm btn-info fa fa-edit"
+                               data-toggle="modal" data-target=".cityEditModal"
+                               data-cityid="{{ $city->id }}"></a> /
+                            <a href="#" class="btn-sm btn-success fa fa-eye"
+                               data-toggle="modal" data-target=".cityShowModal"
+                               data-cityid="{{ $city->id }}"></a> / 
+                            <a href="#" class="btn-sm btn-danger fa fa-trash cityDelete" data-id="{{ $city->id }}"></a>
                           </td>
                           
                         </tr>
@@ -115,38 +120,44 @@
       <!-- /.modal-dialog -->
     </div>
      <!-- Edit the form -->
-     <div class="modal fade countryEditModal" id="modal-lg">
+     <div class="modal fade cityEditModal" id="modal-lg">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Country</h4>
+            <h4 class="modal-title">City</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <div class="card-body">
-                 <form id="countryEditForm">
+                 <form id="cityEditForm">
                   @csrf
                      <div class="form-group">
-                       <label for="country">Country Name</label>
-                       <input type="text" name="country" id="country" class="form-control">
+                       <label for="states">States</label>
+                       <select name="state" id="state" class="form-control">
+                         <option disabled selected>States / Pronvince / Region</option>
+                         @foreach ($states as $state)
+                             <option value="{{ $state->id }}">{{ $state->name }}</option>
+                         @endforeach
+                       </select>
+
                      </div>
                      
                      <div class="form-group">
-                      <label for="zip_code">ZIP Code</label>
-                      <input type="text" name="zip_code" id="zip_code" class="form-control">
+                      <label for="name">Name</label>
+                      <input type="text" name="name" id="name" class="form-control">
                     </div>
 
                     <div>
-                      <input type="hidden" name="countryid" id="countryid">
+                      <input type="hidden" name="cityid" id="cityid">
                     </div>
 
             </div>
           </div>
           <div class="modal-footer ">
             <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-success" id="updateCountry">Save Country</button>
+            <button type="submit" class="btn btn-success" id="updateCity">Save City</button>
             
           </div>
 
@@ -159,6 +170,54 @@
       </div>
       <!-- /.modal-dialog -->
     </div>
+
+      <!-- Show the form -->
+      <div class="modal fade cityShowModal" id="modal-lg">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Show City</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body">
+                   
+                   <form id="showCity">
+                       <div class="form-group">
+                         <select id="state" class="form-control">
+                           <label for="state">State</label>
+                           
+                                @foreach ($states as $state)
+                                    <option selected disabled value="{{ $state->id }}">{{ $state->name }}</option>
+                                @endforeach
+                         </select>
+                       </div>
+
+                       <div>
+                           <input type="text" name="name" id="name" class="form-control">
+                       </div>
+                   </form>
+  
+              </div>
+            </div>
+            <div class="modal-footer ">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+
+            </div>
+  
+            
+                      
+  
+          
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
+    
 @endsection
 
 
@@ -233,26 +292,60 @@
 
           });
 
-          $('.countryEditModal').on('show.bs.modal', function (event) {
+          //show City the coun
+          $('.cityShowModal').on('show.bs.modal', function (event) {
                 let button = $(event.relatedTarget) // Button that triggered the modal
               
-                let countryId = button.data('countryid') // Extract info from data-* attributes
+                let cityId = button.data('cityid') // Extract info from data-* attributes
 
                 // alert(countryId);
 
                 // let modal = $(this)
-                let url = 'country';
+                let url = 'cities';
             
                 $.ajax({
-                    url: url+"/"+countryId+"/edit",
+                    url: url+"/"+cityId,
                     type: "GET",
                     dataType: "JSON",
                     success: function(data){
                         console.log(data);
                         
-                        $('#countryEditForm').find('#country').val(data.name);
-                        $('#countryEditForm').find('#zip_code').val(data.zip_code);
-                        $('#countryEditForm').find('#countryid').val(data.id);
+                        $('#showCity').find('#state').val(data.state_id);
+                        $('#showCity').find('#name').val(data.name);
+                            
+
+                    },
+                    error: function(){
+                        alert("There was an error!");
+                        // toastr.error('There was an error, Please try again later');
+                    }
+                });
+
+            
+            
+          });
+
+          //edit the coun
+          $('.cityEditModal').on('show.bs.modal', function (event) {
+                let button = $(event.relatedTarget) // Button that triggered the modal
+              
+                let cityId = button.data('cityid') // Extract info from data-* attributes
+
+                // alert(countryId);
+
+                // let modal = $(this)
+                let url = 'cities';
+            
+                $.ajax({
+                    url: url+"/"+cityId+"/edit",
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function(data){
+                        console.log(data);
+                        
+                        $('#cityEditForm').find('#state').val(data.state_id);
+                        $('#cityEditForm').find('#name').val(data.name);
+                        $('#cityEditForm').find('#cityid').val(data.id);
                         
                     
                     },
@@ -266,18 +359,19 @@
             
           });
 
-          $('#updateCountry').on('click', function(event){
+          //Update the cities to which state/pronvice they belong to they belong to
+          $('#updateCity').on('click', function(event){
             event.preventDefault();
 
             // alert('HIE');
-            let countryId = $('#countryid').val();
-            let url = 'country';
-            let country = $('#countryEditForm').serialize();
+            let cityId = $('#cityid').val();
+            let url = 'cities';
+            let cities = $('#cityEditForm').serialize();
 
             $.ajax({
-                url:url+"/"+countryId,
+                url:url+"/"+cityId,
                 type: "PUT",
-                data: country,
+                data: cities,
                 success: function(data){
                   console.log(data);
                   if(data){
@@ -285,7 +379,7 @@
                     
                       swal({
                         title: "Updated!",
-                        text: "Country Successfully Updated!",
+                        text: "City Successfully Updated!",
                         icon: "success",
                         button: "Ok!",
                       }).then(
@@ -294,7 +388,7 @@
                           }
                       );
                       // window.location.replace(response.url);
-                      $('countryEditModal').modal('hide');
+                      $('cityEditModal').modal('hide');
                     } else {
                       swal("Oops!", data.errors, 'error');
                   }
@@ -306,6 +400,57 @@
                 }
             });
           })
+
+          // Delete button with sweetalert 
+          $('.cityDelete').on('click', function () {
+                // return confirm('Are you sure want to delete?');
+                event.preventDefault();//this will hold the url
+                
+                $.ajaxSetup({
+                  headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  }
+                });
+
+                swal({
+                    title: "Are you sure?",
+                    text: "Once clicked, this will be not be Reversed!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+
+                    if (willDelete) {
+                      
+                      let dataId = $(this).attr("data-id");
+                      // let token = $("meta[name='csrf-token']").attr("content");
+                      // alert(dataId);
+                      let url = 'cities';
+
+                      $.ajax({
+                            url: url+"/"+dataId,
+                            type: "DELETE",
+                            data: {
+                                "id": dataId,
+                                "_token": '{{csrf_token()}}',
+                            },
+                            success: function (data) {
+                                  swal("Done! City has been Deleted!", {
+                                      icon: "success",
+                                      button: false,
+                                  });
+                            }         
+                        });
+
+                      setTimeout(function(){
+                          location.reload(true);//this will release the event
+                      },3000);
+                    } else {
+                        swal("Your imaginary file is safe!");
+                    }
+                });
+          });
 
       </script>
      

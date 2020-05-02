@@ -57,12 +57,11 @@ Route::resource('cargoinfo',"CargoinfoController");
 
 Route::resource('pickupinfo',"PickupinfoController");
 
-Route::resource('clientsinfo',"ClientinfoController");
+Route::resource('clients',"ClientController");
 
 /**
  * Country State/Region/Provinces city
- * @the controlller holds the serch of the state 
- * @and the city
+ * @the controlller holds the search functionality call
  */
  Route::get('states',"Countrystatecity@states");
  Route::get('cities',"Countrystatecity@cities");

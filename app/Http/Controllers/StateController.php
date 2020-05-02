@@ -61,7 +61,7 @@ class StateController extends Controller
      */
     public function show(State $state)
     {
-        //
+        return $state;
     }
 
     /**
@@ -72,7 +72,7 @@ class StateController extends Controller
      */
     public function edit(State $state)
     {
-        //
+        return $state;
     }
 
     /**
@@ -84,7 +84,11 @@ class StateController extends Controller
      */
     public function update(Request $request, State $state)
     {
-        //
+        $state->country_id = $request->country;
+        $state->name = $request->name;
+        $state->save();
+
+        return response()->Json('Success', 200);
     }
 
     /**
@@ -95,6 +99,8 @@ class StateController extends Controller
      */
     public function destroy(State $state)
     {
-        //
+        $state->delete();
+
+        return response()->Json('Success',200);
     }
 }
