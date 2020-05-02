@@ -1,5 +1,13 @@
 @extends('admin.layouts.app')
 
+@section('browsertitle', 'Ecocargo | Dashboard')
+
+@section('title','Dashboard')
+
+@section('breadcrumb1', 'Dashboard')
+
+@section('breadcrumb2', 'View')
+
 @section('content')
 <div class="container-fluid">
   <!-- Small boxes (Stat box) -->

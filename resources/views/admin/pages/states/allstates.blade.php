@@ -1,5 +1,13 @@
 @extends('admin.layouts.app')
 
+@section('browsertitle', 'Ecocargo | States')
+
+@section('title','States ')
+
+@section('breadcrumb1', 'States')
+
+@section('breadcrumb2', 'View')
+
 @section('styles')
    
     <!-- DataTables -->

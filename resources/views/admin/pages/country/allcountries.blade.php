@@ -1,5 +1,14 @@
 @extends('admin.layouts.app')
 
+
+@section('browsertitle', 'Ecocargo | Countries ')
+
+@section('title','Countries ')
+
+@section('breadcrumb1', 'Countries')
+
+@section('breadcrumb2', 'View')
+
 @section('styles')
    
     <!-- DataTables -->
@@ -27,7 +36,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped table-responsive nowrap" width="100%">
+                <table id="example1" class="table table-bordered table-striped table-responsive-md nowrap" width="100%">
                   <thead>
                   <tr>
                     <th></th>
